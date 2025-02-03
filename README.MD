@@ -1,4 +1,4 @@
-```md
+
 # BRUTAL//STACK
 
 full-stack template with brutalist-minimal aesthetics. FRONTEND + BACKEND repos included.
@@ -39,4 +39,3 @@ MIT
 ---
 
 built with ACTUAL TASTE
-```
