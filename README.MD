@@ -12,13 +12,11 @@ full-stack template with brutalist-minimal aesthetics. FRONTEND + BACKEND repos 
 - google oauth (passwordless gang)
 
 ### backend (hono)
-- bun runtime v1.0 (SPEED demon)
-- drizzle orm v0.29
+- bun runtime (SPEED demon)
+- drizzle orm
 - file upload to cloudflare r2
-- mysql 8.0 (battle-tested fr)
+- mysql (battle-tested fr)
 - docker (containerized db)
-- stripe integration
-- sentry error tracking
 
 ## QUICK START
 
