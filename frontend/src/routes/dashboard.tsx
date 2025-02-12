@@ -1,14 +1,21 @@
-import { useUser } from "~/lib/hooks/user";
-import { useNavigate } from "@remix-run/react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { queryConfigUser } from "@/lib/hooks/user";
 import { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
-export default function Dashboard() {
+export const Route = createFileRoute("/dashboard")({
+  component: RouteComponent,
+  loader: async ({ context }) =>
+    await context.queryClient.prefetchQuery(queryConfigUser),
+});
+
+function RouteComponent() {
   const navigate = useNavigate();
-  const userQuery = useUser(navigate);
+  const userQuery = useQuery(queryConfigUser);
 
   useEffect(() => {
     if (!userQuery.isPending && !userQuery.data?.id) {
-      navigate("/auth");
+      navigate({ to: "/auth" });
     }
   }, [userQuery.isPending, userQuery.data?.id, navigate]);
 

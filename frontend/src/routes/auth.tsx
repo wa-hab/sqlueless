@@ -1,14 +1,21 @@
-import { useAuth, useUser } from "~/lib/hooks/user";
-import { useNavigate } from "@remix-run/react";
+import { useAuth, queryConfigUser } from "@/lib/hooks/user";
 import { useEffect } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
 
-export default function AuthPage() {
+export const Route = createFileRoute("/auth")({
+  component: RouteComponent,
+  loader: async ({ context }) =>
+    await context.queryClient.prefetchQuery(queryConfigUser),
+});
+
+function RouteComponent() {
   const navigate = useNavigate();
   const { handleGoogleAuth } = useAuth(navigate);
-  const userQuery = useUser(navigate);
+  const userQuery = useQuery(queryConfigUser);
 
   useEffect(() => {
-    if (userQuery?.data?.id) navigate("/");
+    if (userQuery?.data?.id) navigate({ to: "/dashboard" });
   }, [userQuery?.data]);
 
   return (
@@ -25,9 +32,9 @@ export default function AuthPage() {
         <button
           onClick={handleGoogleAuth}
           className="w-full p-3 flex items-center justify-center gap-3
-          border-2 border-black bg-white
-          hover:-translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
-          transition-all text-sm"
+        border-2 border-black bg-white
+        hover:-translate-y-[2px] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
+        transition-all text-sm"
         >
           <GoogleIcon />
           continue with google

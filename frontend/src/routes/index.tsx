@@ -1,18 +1,11 @@
-import type { MetaFunction } from "@remix-run/node";
-import { Link, useLoaderData, useNavigate } from "@remix-run/react";
-import { useUser } from "~/lib/hooks/user";
+import { Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 
-export const meta: MetaFunction = () => {
-  return [
-    { title: "Simple Landing Page" },
-    { name: "description", content: "A simple landing page" },
-  ];
-};
+export const Route = createFileRoute("/")({
+  component: HomeComponent,
+});
 
-export default function Index() {
-  const navigate = useNavigate();
-  const userQuery = useUser(navigate);
-
+function HomeComponent() {
   return (
     <div className="p-4 md:p-8 bg-white">
       <div className="max-w-screen-lg mx-auto border-2 border-black p-4 md:p-8">
@@ -29,12 +22,13 @@ export default function Index() {
             <div className="mt-6 md:mt-8 space-y-3">
               <p className="text-sm font-mono">ready to start?</p>
               <Link
-                to={userQuery.data?.id ? "/dashboard" : "/auth"}
+                to="/about"
                 className="px-4 py-2 border-2 border-black bg-white inline-block
                 hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]
                 hover:-translate-y-[2px] transition-all text-sm"
               >
-                {userQuery.data?.id ? "dashboard →" : "get started →"}
+                adsad
+                {/* {userQuery.data?.id ? "dashboard →" : "get started →"} */}
               </Link>
             </div>
           </div>

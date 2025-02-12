@@ -1,9 +1,11 @@
-import { Link, useNavigate, useLocation } from "@remix-run/react";
-import { useLogout, useUser } from "~/lib/hooks/user";
+import { Link, useNavigate, useLocation } from "@tanstack/react-router";
+import { useLogout, queryConfigUser } from "@/lib/hooks/user";
+import { useQuery } from "@tanstack/react-query";
+
 export default function Navbar() {
   const navigate = useNavigate();
   const location = useLocation();
-  const userQuery = useUser(navigate);
+  const userQuery = useQuery(queryConfigUser);
   const logoutMutation = useLogout(navigate);
 
   const logout = () => {
@@ -23,7 +25,7 @@ export default function Navbar() {
 
           <div className="flex items-center font-mono text-sm border-l-2 border-black">
             <Link
-              to="/public"
+              to="/about"
               className={`px-4 h-full flex items-center border-r-2 border-black hover:bg-yellow-100 transition-colors ${
                 location.pathname === "/goods" ? "bg-yellow-50" : ""
               }`}

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@remix-run/react";
+import { useNavigate } from "@tanstack/react-router";
 
 // moved to separate file ideally
 export const authApi = {
@@ -12,19 +12,17 @@ export const authApi = {
   logout: () => axios.post("/auth/logout"),
 };
 
-export const useUser = (navigate: ReturnType<typeof useNavigate>) => {
-  return useQuery({
-    queryKey: ["user"],
-    queryFn: () => authApi.checkUser().then((res) => res.data),
-    retry: false,
-  });
+export const queryConfigUser = {
+  queryKey: ["user"],
+  queryFn: () => authApi.checkUser().then((res) => res.data),
+  retry: false,
 };
 
 export const useGoogleCallback = (navigate: ReturnType<typeof useNavigate>) => {
   const googleCallback = useMutation({
     mutationFn: authApi.googleCallback,
     onSuccess: (res) => {
-      if (res.data.user) navigate("/");
+      navigate({ to: "/dashboard" });
     },
   });
 
@@ -58,7 +56,7 @@ export const useLogout = (navigate: ReturnType<typeof useNavigate>) => {
     mutationFn: authApi.logout,
     onSuccess: () => {
       utils.clear();
-      navigate("/");
+      navigate({ to: "/auth" });
     },
   });
 };
