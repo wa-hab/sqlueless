@@ -25,12 +25,12 @@ function RootComponent() {
   }, []);
 
   return (
-    <>
+    <div className="flex">
       <Navbar></Navbar>
-      <div className="min-h-[90vh] flex flex-col items-center justify-center">
+      <div className="grow min-h-screen flex flex-col items-center justify-center">
         <Outlet />
       </div>
       <TanStackRouterDevtools position="bottom-right" />
-    </>
+    </div>
   );
 }

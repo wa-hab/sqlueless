@@ -85,7 +85,7 @@ function HomeComponent() {
         </div>
 
         <footer className="mt-8 md:mt-12 pt-4 border-t-2 border-black font-mono text-xs flex flex-col sm:flex-row justify-between gap-4">
-          <div>© {new Date().getFullYear()} your project name</div>
+          <div>© {new Date().getFullYear()} sqlueless</div>
           <div className="space-x-4">{/* same social links... */}</div>
         </footer>
       </div>

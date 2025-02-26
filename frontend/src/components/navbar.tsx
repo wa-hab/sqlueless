@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from "@tanstack/react-router";
 import { useLogout, queryConfigUser } from "@/lib/hooks/user";
 import { useQuery } from "@tanstack/react-query";
+import { Home, LogIn, LogOut } from "lucide-react";
 
 export default function Navbar() {
   const navigate = useNavigate();
@@ -13,56 +14,70 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-white flex items-center justify-center top-4 w-full z-50 min-h-[10vh] ">
-      <div className="max-w-screen-lg w-full mx-auto px-8">
-        <div className="border-2 border-black bg-white flex items-center justify-between h-14">
-          <Link
-            to="/"
-            className="font-bold text-sm tracking-tight px-4 hover:-rotate-2 transition-transform"
+    <nav className="bg-white w-20 flex flex-col h-screen border-r-2 border-black">
+      <div className="p-4">
+        <Link
+          to="/"
+          className="font-bold text-sm tracking-tight hover:-rotate-2 transition-transform block"
+        >
+          SQLueless
+        </Link>
+      </div>
+
+      <div className="flex flex-col items-start">
+        <IconWithTooltip
+          icon={<Home />}
+          tooltip="Home"
+          href={userQuery.data?.id ? "/dashboard" : "/"}
+        />
+
+        {!userQuery.data?.id ? (
+          <IconWithTooltip
+            icon={<LogIn />}
+            tooltip="Login"
+            href="/auth"
+            extraClasses={location.pathname === "/auth" ? "bg-yellow-50" : ""}
+          />
+        ) : (
+          <button
+            onClick={logout}
+            className="hover:bg-yellow-100 transition-colors rounded-md"
           >
-            PROJECT NAME
-          </Link>
-
-          <div className="flex items-center font-mono text-sm border-l-2 border-black">
-            <Link
-              to="/about"
-              className={`px-4 h-full flex items-center border-r-2 border-black hover:bg-yellow-100 transition-colors ${
-                location.pathname === "/goods" ? "bg-yellow-50" : ""
-              }`}
-            >
-              browse
-            </Link>
-
-            {!userQuery.data?.id ? (
-              <Link
-                to="/auth"
-                className={`px-4 h-full flex items-center hover:bg-black hover:text-white transition-colors ${
-                  location.pathname === "/auth" ? "bg-black text-white" : ""
-                }`}
-              >
-                login
-              </Link>
-            ) : (
-              <>
-                <Link
-                  to="/dashboard"
-                  className={`px-4 h-full flex items-center border-r-2 border-black hover:bg-yellow-100 transition-colors ${
-                    location.pathname === "/dashboard" ? "bg-yellow-50" : ""
-                  }`}
-                >
-                  dashboard
-                </Link>
-                <button
-                  onClick={logout}
-                  className="px-4 h-full flex items-center hover:bg-black hover:text-white transition-colors"
-                >
-                  logout
-                </button>
-              </>
-            )}
-          </div>
-        </div>
+            <IconWithTooltip icon={<LogOut />} tooltip="Logout" />
+          </button>
+        )}
       </div>
     </nav>
   );
 }
+
+// helper function, CAPITALIZED bc it returns a component. a "hook" if you will
+const IconWithTooltip = ({
+  icon,
+  tooltip,
+  href,
+  extraClasses,
+}: {
+  icon: React.ReactNode;
+  tooltip: string;
+  href?: string;
+  extraClasses?: string;
+}) => {
+  const baseClasses = `p-4 hover:bg-yellow-100 transition-colors rounded-md ${extraClasses}`;
+  return (
+    <div className="group relative flex items-center">
+      {href ? (
+        <Link to={href} className={baseClasses}>
+          {icon}
+        </Link>
+      ) : (
+        <div className={baseClasses}>{icon}</div>
+      )}
+
+      {/* tooltip. "group-hover" is the IMPORTANT part */}
+      <span className="absolute left-14 top-1/2 -translate-y-1/2 scale-0 rounded bg-gray-800 px-2 py-1 text-xs text-gray-100 group-hover:scale-100">
+        {tooltip}
+      </span>
+    </div>
+  );
+};
